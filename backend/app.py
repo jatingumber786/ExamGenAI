@@ -29,10 +29,12 @@ from werkzeug.security import check_password_hash, generate_password_hash
 BACKEND_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = BACKEND_DIR.parent
 FRONTEND_DIR = PROJECT_ROOT / "frontend"
-DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{(PROJECT_ROOT / 'portal.db').as_posix()}")
+SERVERLESS_TEMP_DIR = Path(os.getenv("TMPDIR", os.getenv("TEMP", "/tmp")))
+DEFAULT_SQLITE_PATH = (SERVERLESS_TEMP_DIR / "portal.db") if os.getenv("VERCEL") else (PROJECT_ROOT / "portal.db")
+DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{DEFAULT_SQLITE_PATH.as_posix()}")
 IS_SQLITE = DATABASE_URL.startswith("sqlite")
-UPLOAD_DIR = Path(os.getenv("TMPDIR", os.getenv("TEMP", "/tmp")))
-GENERATED_DIR = Path(os.getenv("TMPDIR", os.getenv("TEMP", "/tmp")))
+UPLOAD_DIR = SERVERLESS_TEMP_DIR
+GENERATED_DIR = SERVERLESS_TEMP_DIR
 ALLOWED_EXTENSIONS = {".txt", ".md", ".csv", ".json", ".py", ".docx", ".pdf"}
 OWNER_EMAIL = os.getenv("OWNER_EMAIL", "").strip().lower()
 

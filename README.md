@@ -32,7 +32,12 @@ For Vercel, use PostgreSQL. Local SQLite is fine for development, but it is not 
 
 ## Owner Access
 
-Set `OWNER_EMAIL` to the email address of the account that should see the owner dashboard. That page shows:
+The owner dashboard is locked to the dedicated owner login:
+
+- username: `jatingumber`
+- password: `23bcs10547`
+
+That page shows:
 
 - total accounts created
 - total question papers generated
@@ -45,7 +50,6 @@ Set `OWNER_EMAIL` to the email address of the account that should see the owner 
 ```bash
 SECRET_KEY=your-secure-secret
 DATABASE_URL=your-postgres-connection-string
-OWNER_EMAIL=owner@example.com
 ```
 
 For local development, `DATABASE_URL` is optional and the app will fall back to `portal.db`.
@@ -72,5 +76,11 @@ Open `http://127.0.0.1:5000`.
 ## Recommended Vercel Setup
 
 1. Create a PostgreSQL database from Neon, Supabase, or Vercel Postgres.
-2. Add `DATABASE_URL`, `SECRET_KEY`, and `OWNER_EMAIL` in Vercel project environment variables.
+2. Add `DATABASE_URL` and `SECRET_KEY` in Vercel project environment variables.
 3. Deploy the repo to Vercel.
+
+## Important Vercel Note
+
+If `DATABASE_URL` is missing on Vercel, the app now falls back to `/tmp/portal.db` so the function can still boot.
+That avoids a runtime crash, but the data will be temporary and will not persist between deployments or function restarts.
+For real deployment, always set `DATABASE_URL` to PostgreSQL.
