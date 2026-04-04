@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student History</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="dashboard-body">
+    {% set active_page = 'history' %}
+    {% include '_app_header.html' %}
+
+    <main class="history-layout">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-stack">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <section class="panel stats-row">
+            <div class="stat-card">
+                <span>Total Evaluations</span>
+                <strong>{{ stats.total_students or 0 }}</strong>
+            </div>
+            <div class="stat-card">
+                <span>Average Score</span>
+                <strong>{{ "%.2f"|format(stats.average_percentage or 0) }}%</strong>
+            </div>
+            <div class="stat-card">
+                <span>Best Score</span>
+                <strong>{{ "%.2f"|format(stats.best_percentage or 0) }}%</strong>
+            </div>
+            <div class="stat-card">
+                <span>Lowest Score</span>
+                <strong>{{ "%.2f"|format(stats.lowest_percentage or 0) }}%</strong>
+            </div>
+        </section>
+
+        <section class="panel analytics-board">
+            <div class="chart-card">
+                <div class="output-header">
+                    <h2>Average by Subject</h2>
+                </div>
+                {% if analytics.subject_bars %}
+                    <div class="bar-chart">
+                        {% for item in analytics.subject_bars %}
+                            <div class="bar-row">
+                                <div class="bar-meta">
+                                    <span>{{ item.label }}</span>
+                                    <strong>{{ item.value }}%</strong>
+                                </div>
+                                <div class="bar-track">
+                                    <div class="bar-fill" style="width: {{ item.width }}%;"></div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="empty-copy">No subject analytics yet.</p>
+                {% endif %}
+            </div>
+
+            <div class="chart-card">
+                <div class="output-header">
+                    <h2>Performance Bands</h2>
+                </div>
+                {% if analytics.band_bars %}
+                    <div class="bar-chart">
+                        {% for item in analytics.band_bars %}
+                            <div class="bar-row">
+                                <div class="bar-meta">
+                                    <span>{{ item.label }}</span>
+                                    <strong>{{ item.value }}</strong>
+                                </div>
+                                <div class="bar-track soft">
+                                    <div class="bar-fill gold" style="width: {{ item.width }}%;"></div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="empty-copy">No band distribution yet.</p>
+                {% endif %}
+            </div>
+
+            <div class="chart-card full-span">
+                <div class="output-header">
+                    <h2>Average by Class and Section</h2>
+                </div>
+                {% if analytics.class_bars %}
+                    <div class="bar-chart">
+                        {% for item in analytics.class_bars %}
+                            <div class="bar-row">
+                                <div class="bar-meta">
+                                    <span>{{ item.label }}</span>
+                                    <strong>{{ item.value }}%</strong>
+                                </div>
+                                <div class="bar-track">
+                                    <div class="bar-fill teal" style="width: {{ item.width }}%;"></div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="empty-copy">Add class and section evaluations to see grouped performance.</p>
+                {% endif %}
+            </div>
+
+            <div class="chart-card full-span">
+                <div class="output-header">
+                    <h2>Recent Evaluation Snapshot</h2>
+                </div>
+                {% if analytics.recent_rows %}
+                    <div class="mini-cards">
+                        {% for row in analytics.recent_rows %}
+                            <div class="mini-card">
+                                <span>{{ row.student_name }}</span>
+                                <strong>{{ row.percentage }}%</strong>
+                                <p>{{ row.subject }} | {{ row.class_name }}-{{ row.section_name }}</p>
+                                <small>{{ row.created_at }}</small>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="empty-copy">Recent evaluations will appear here.</p>
+                {% endif %}
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="output-header history-header">
+                <h2>Saved Student Evaluations</h2>
+                {% if records %}
+                    <button type="submit" form="history-delete-form" class="history-delete-btn" onclick="return confirm('Delete the selected history records? This cannot be undone.');">Delete Selected</button>
+                {% endif %}
+            </div>
+            {% if records %}
+                <form id="history-delete-form" method="post" action="{{ url_for('delete_history_records') }}">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="select-all-history" aria-label="Select all history rows"></th>
+                            <th>Student</th>
+                            <th>Subject</th>
+                            <th>Class</th>
+                            <th>Section</th>
+                            <th>Marks</th>
+                            <th>Percent</th>
+                            <th>Band</th>
+                            <th>Rubric</th>
+                            <th>Date</th>
+                            <th>Report</th>
+                            <th>Summary</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in records %}
+                            <tr>
+                                <td><input type="checkbox" name="evaluation_ids" value="{{ row.id }}" class="history-select-row" aria-label="Select {{ row.student_name }}"></td>
+                                <td>{{ row.student_name }}</td>
+                                <td>{{ row.subject }}</td>
+                                <td>{{ row.class_name }}</td>
+                                <td>{{ row.section_name }}</td>
+                                <td>{{ row.marks_obtained }} / {{ row.total_marks }}</td>
+                                <td>{{ row.percentage }}%</td>
+                                <td>{{ row.performance_band }}</td>
+                                <td>{{ row.rubric_name }}</td>
+                                <td>{{ row.created_at }}</td>
+                                <td><a class="table-link" href="{{ url_for('evaluation_report', evaluation_id=row.id) }}">PDF</a></td>
+                                <td>
+                                    <strong>Strength:</strong> {{ row.strengths }}<br>
+                                    <strong>Improve:</strong> {{ row.improvements }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                </form>
+            {% else %}
+                <pre>No student evaluations have been saved yet.</pre>
+            {% endif %}
+        </section>
+    </main>
+    {% include '_theme_script.html' %}
+    <script>
+        (() => {
+            const selectAll = document.getElementById('select-all-history');
+            if (!selectAll) return;
+            const rows = document.querySelectorAll('.history-select-row');
+            selectAll.addEventListener('change', () => {
+                rows.forEach((row) => {
+                    row.checked = selectAll.checked;
+                });
+            });
+            rows.forEach((row) => {
+                row.addEventListener('change', () => {
+                    selectAll.checked = rows.length > 0 && [...rows].every((item) => item.checked);
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

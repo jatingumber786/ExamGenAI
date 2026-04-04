@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Insights</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="dashboard-body">
+    {% set active_page = 'owner' %}
+    {% include '_app_header.html' %}
+
+    <main class="history-layout">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-stack">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <section class="panel stats-row">
+            <div class="stat-card">
+                <span>Total Accounts Created</span>
+                <strong>{{ insights.totals.total_teachers }}</strong>
+            </div>
+            <div class="stat-card">
+                <span>Total Question Papers</span>
+                <strong>{{ insights.totals.total_papers }}</strong>
+            </div>
+            <div class="stat-card">
+                <span>Total Evaluations</span>
+                <strong>{{ insights.totals.total_evaluations }}</strong>
+            </div>
+        </section>
+
+        <section class="panel analytics-board">
+            <div class="chart-card">
+                <div class="output-header">
+                    <h2>Papers Generated per Teacher</h2>
+                </div>
+                {% if insights.paper_bars %}
+                    <div class="bar-chart">
+                        {% for item in insights.paper_bars %}
+                            <div class="bar-row">
+                                <div class="bar-meta">
+                                    <span>{{ item.label }}</span>
+                                    <strong>{{ item.value }}</strong>
+                                </div>
+                                <div class="bar-track">
+                                    <div class="bar-fill teal" style="width: {{ item.width }}%;"></div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="empty-copy">No paper activity yet.</p>
+                {% endif %}
+            </div>
+
+            <div class="chart-card">
+                <div class="output-header">
+                    <h2>Evaluations per Teacher</h2>
+                </div>
+                {% if insights.evaluation_bars %}
+                    <div class="bar-chart">
+                        {% for item in insights.evaluation_bars %}
+                            <div class="bar-row">
+                                <div class="bar-meta">
+                                    <span>{{ item.label }}</span>
+                                    <strong>{{ item.value }}</strong>
+                                </div>
+                                <div class="bar-track soft">
+                                    <div class="bar-fill gold" style="width: {{ item.width }}%;"></div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="empty-copy">No evaluation activity yet.</p>
+                {% endif %}
+            </div>
+
+            <div class="chart-card full-span">
+                <div class="output-header">
+                    <h2>Recent Accounts</h2>
+                </div>
+                {% if insights.recent_teachers %}
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Created At</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in insights.recent_teachers %}
+                                <tr>
+                                    <td>{{ row.full_name }}</td>
+                                    <td>{{ row.email }}</td>
+                                    <td>{{ row.created_at }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="empty-copy">No accounts created yet.</p>
+                {% endif %}
+            </div>
+
+            <div class="chart-card full-span">
+                <div class="output-header">
+                    <h2>Teacher Accounts</h2>
+                </div>
+                {% if insights.teacher_records %}
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Joined</th>
+                                <th>Papers</th>
+                                <th>Evaluations</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in insights.teacher_records %}
+                                <tr>
+                                    <td>{{ row.full_name }}</td>
+                                    <td>{{ row.email }}</td>
+                                    <td>{{ row.created_at }}</td>
+                                    <td>{{ row.papers }}</td>
+                                    <td>{{ row.evaluations }}</td>
+                                    <td>
+                                        <form method="post" action="{{ url_for('owner_delete_teacher', teacher_id=row.id) }}" onsubmit="return confirm('Delete this teacher account and all related papers/evaluations?');">
+                                            <button type="submit" class="history-delete-btn owner-delete-btn">Delete User</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="empty-copy">No teacher accounts available.</p>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+    {% include '_theme_script.html' %}
+</body>
+</html>

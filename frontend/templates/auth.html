@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Access - ExamGen Ai</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .auth-switcher {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+            padding: 8px;
+            background: rgba(29, 76, 143, 0.06);
+            border-radius: 16px;
+            margin-bottom: 26px;
+        }
+        .auth-switcher__btn {
+            min-height: 46px;
+            border: none;
+            border-radius: 12px;
+            background: transparent;
+            color: var(--muted);
+            font: inherit;
+            font-weight: 800;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+        .auth-switcher__btn.is-active {
+            background: #ffffff;
+            color: var(--brand-dark);
+            box-shadow: 0 10px 20px rgba(15, 32, 61, 0.08);
+        }
+        .auth-pane {
+            display: none;
+        }
+        .auth-pane.is-active {
+            display: block;
+        }
+        .auth-pane .auth-form {
+            display: block;
+        }
+        .auth-note {
+            text-align: center;
+            margin-top: 24px;
+            color: var(--muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body class="auth-body">
+    <div class="auth-container">
+        <div class="auth-logo">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 3.5h7l4 4V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                <path d="M14 3.5V8h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 12h6M9 15.5h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+        </div>
+        <h1>Teacher Portal Access</h1>
+        <p>Create a teacher account or sign in to manage question papers and evaluations.</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-stack">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="auth-switcher" role="tablist" aria-label="Authentication mode">
+            <button class="auth-switcher__btn {{ 'is-active' if active_mode != 'signup' else '' }}" type="button" data-auth-tab="login">Sign In</button>
+            <button class="auth-switcher__btn {{ 'is-active' if active_mode == 'signup' else '' }}" type="button" data-auth-tab="signup">Sign Up</button>
+        </div>
+
+        <section class="auth-pane {{ 'is-active' if active_mode != 'signup' else '' }}" data-auth-pane="login">
+            <form class="auth-form" method="post">
+                <input type="hidden" name="mode" value="login">
+                <div class="form-group">
+                    <label for="login_id">Email or Username</label>
+                    <input type="text" id="login_id" name="login_id" placeholder="Enter your teacher email or owner username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login_password">Password</label>
+                    <input type="password" id="login_password" name="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="auth-btn">Sign In</button>
+            </form>
+        </section>
+
+        <section class="auth-pane {{ 'is-active' if active_mode == 'signup' else '' }}" data-auth-pane="signup">
+            <form class="auth-form" method="post">
+                <input type="hidden" name="mode" value="signup">
+                <div class="form-group">
+                    <label for="signup_name">Full Name</label>
+                    <input type="text" id="signup_name" name="full_name" placeholder="Enter teacher full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup_email">Email</label>
+                    <input type="email" id="signup_email" name="email" placeholder="Enter teacher email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup_password">Password</label>
+                    <input type="password" id="signup_password" name="password" placeholder="Create a password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm the password" required>
+                </div>
+                <button type="submit" class="auth-btn">Create Account</button>
+            </form>
+        </section>
+
+        <p class="auth-note">
+            Teachers can create their own accounts here.
+            Only the owner account with username <strong>jatingumber</strong> can access the owner dashboard.
+        </p>
+    </div>
+
+    <footer style="text-align: center; padding: 40px 20px; background: rgba(248, 251, 255, 0.9); border-top: 1px solid rgba(21, 35, 61, 0.1); color: #9CA3AF;">
+        <p>&copy; 2026 ExamGen Ai. AI-powered question paper design &amp; evaluation.</p>
+    </footer>
+
+    <script>
+        (() => {
+            const buttons = document.querySelectorAll('[data-auth-tab]');
+            const panes = document.querySelectorAll('[data-auth-pane]');
+
+            const setActive = (mode) => {
+                buttons.forEach((button) => {
+                    button.classList.toggle('is-active', button.dataset.authTab === mode);
+                });
+                panes.forEach((pane) => {
+                    pane.classList.toggle('is-active', pane.dataset.authPane === mode);
+                });
+            };
+
+            buttons.forEach((button) => {
+                button.addEventListener('click', () => setActive(button.dataset.authTab));
+            });
+        })();
+    </script>
+</body>
+</html>

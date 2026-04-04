@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generated Question Paper</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="dashboard-body wizard-body">
+    {% set active_page = 'create' %}
+    {% include '_app_header.html' %}
+
+    <main class="wizard-shell">
+        <div class="wizard-steps">
+            <div class="wizard-step wizard-step--done"><span>✓</span><strong>Upload</strong></div>
+            <div class="wizard-step-line wizard-step-line--active"></div>
+            <div class="wizard-step wizard-step--done"><span>✓</span><strong>Configure</strong></div>
+            <div class="wizard-step-line wizard-step-line--active"></div>
+            <div class="wizard-step wizard-step--active"><span>3</span><strong>Generate</strong></div>
+        </div>
+
+        <section class="wizard-card">
+            <div class="generated-header">
+                <div>
+                    <h2>Generated Question Paper</h2>
+                    <p>{{ paper.subject }} - {{ paper.exam_title }} - {{ paper.marks }} marks</p>
+                </div>
+                <div class="generated-actions">
+                    <a class="wizard-back" href="{{ url_for('start_over_paper') }}">Start Over</a>
+                    <a class="wizard-submit wizard-submit--link" href="{{ url_for('download') }}">Download</a>
+                </div>
+            </div>
+
+            <div class="generated-list">
+                {% for question in paper.questions %}
+                    <article class="question-card">
+                        <div class="question-card__top">
+                            <span class="question-number">{{ question.number }}</span>
+                            <span class="question-badge">{{ question.type_label }}</span>
+                            <span class="question-badge">{{ question.marks }} marks</span>
+                        </div>
+                        <h3>{{ question.prompt }}</h3>
+                        {% if question.options %}
+                            <ul class="question-options">
+                                {% for option in question.options %}
+                                    <li>{{ option }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        <div class="expected-answer">
+                            <strong>Expected Answer</strong>
+                            <p>{{ question.expected_answer }}</p>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    <footer class="wizard-footer">
+        <div class="landing-footer__brand">
+            <span class="brand-mark brand-mark--small">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M7 3.5h7l4 4V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    <path d="M14 3.5V8h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            <span class="brand-text">Exam<span>Gen</span> Ai</span>
+        </div>
+        <p>&copy; 2026 ExamGen Ai. AI-powered question paper design &amp; evaluation.</p>
+    </footer>
+
+    {% include '_theme_script.html' %}
+</body>
+</html>

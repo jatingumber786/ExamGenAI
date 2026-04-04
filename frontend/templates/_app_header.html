@@ -1,0 +1,54 @@
+<header class="app-header">
+    <div class="app-header__inner">
+        <a class="brand" href="{{ url_for('landing') }}">
+            <span class="brand-mark">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M7 3.5h7l4 4V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    <path d="M14 3.5V8h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            <span class="brand-text">Exam<span>Gen</span> Ai</span>
+        </a>
+
+        <nav class="app-nav">
+            <a class="app-nav__link {{ 'active' if active_page == 'home' else '' }}" href="{{ url_for('landing') }}">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-4.5v-5.5h-5V21H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                </span>
+                Home
+            </a>
+            <a class="app-nav__link {{ 'active' if active_page == 'create' else '' }}" href="{{ url_for('dashboard') }}">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7l4 4V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3.5V8h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                Create Paper
+            </a>
+            <a class="app-nav__link {{ 'active' if active_page == 'evaluate' else '' }}" href="{{ url_for('evaluate') }}">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 11.5 10.5 14 16 8.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+                </span>
+                Evaluate
+            </a>
+            <a class="app-nav__link {{ 'active' if active_page == 'history' else '' }}" href="{{ url_for('history') }}">
+                More
+                <span class="nav-chevron">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+            </a>
+            {% if session.get('is_owner') %}
+                <a class="app-nav__link {{ 'active' if active_page == 'owner' else '' }}" href="{{ url_for('owner') }}">Owner</a>
+            {% endif %}
+            <button class="theme-toggle" type="button" aria-label="Toggle theme">
+                <span class="theme-toggle__sun">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M18.4 5.6l-1.8 1.8M7.4 16.6l-1.8 1.8M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </span>
+            </button>
+            <a class="landing-signin app-signout" href="{{ url_for('logout') }}">
+                <span class="signin-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 7 15 12 10 17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.5 12H4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19.5 4.5h-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19.5 19.5h-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19.5 4.5v15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </span>
+                Sign In
+            </a>
+        </nav>
+    </div>
+</header>

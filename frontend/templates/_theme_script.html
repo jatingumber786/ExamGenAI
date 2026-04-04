@@ -1,0 +1,21 @@
+<script>
+    (() => {
+        const root = document.body;
+        const toggle = document.querySelector('.theme-toggle, .landing-nav__theme');
+        const savedTheme = localStorage.getItem('teacher-portal-theme');
+        const syncThemeState = () => {
+            const isDark = root.classList.contains('theme-dark');
+            toggle?.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+            toggle?.setAttribute('title', isDark ? 'Light mode' : 'Dark mode');
+        };
+
+        if (savedTheme === 'dark') root.classList.add('theme-dark');
+        syncThemeState();
+
+        toggle?.addEventListener('click', () => {
+            root.classList.toggle('theme-dark');
+            localStorage.setItem('teacher-portal-theme', root.classList.contains('theme-dark') ? 'dark' : 'light');
+            syncThemeState();
+        });
+    })();
+</script>

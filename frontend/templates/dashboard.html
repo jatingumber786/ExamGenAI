@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Study Material</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="dashboard-body wizard-body">
+    {% set active_page = 'create' %}
+    {% include '_app_header.html' %}
+
+    <main class="wizard-shell">
+        <div class="wizard-steps">
+            <div class="wizard-step wizard-step--active"><span>1</span><strong>Upload</strong></div>
+            <div class="wizard-step-line"></div>
+            <div class="wizard-step"><span>2</span><strong>Configure</strong></div>
+            <div class="wizard-step-line"></div>
+            <div class="wizard-step"><span>3</span><strong>Generate</strong></div>
+        </div>
+
+        <section class="wizard-card">
+            <div class="wizard-card__heading">
+                <h2>Upload Study Material</h2>
+                <p>Upload your notes or paste content to generate questions from</p>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-stack">
+                        {% for category, message in messages %}
+                            <div class="flash {{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <form method="post" enctype="multipart/form-data" class="wizard-form">
+                <label class="dropzone">
+                    <input type="file" name="file" accept=".txt,.md,.csv,.json,.py,.docx,.pdf" hidden>
+                    <span class="dropzone__icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V6M8 10l4-4 4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 19.5h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                    </span>
+                    <strong>Click to upload PDF or text file</strong>
+                    <small>Supports PDF, TXT, MD files</small>
+                </label>
+
+                <div class="wizard-divider"><span>OR PASTE CONTENT</span></div>
+
+                <textarea name="content" rows="10" placeholder="Paste your study notes or content here...">{{ wizard.get('source_text', '') if wizard else '' }}</textarea>
+
+                <div class="dual-grid">
+                    <div>
+                        <label>Subject Name</label>
+                        <input type="text" name="subject" placeholder="e.g., Mathematics, Physics" value="{{ wizard.get('subject', '') if wizard else '' }}">
+                    </div>
+                    <div>
+                        <label>Exam Title</label>
+                        <input type="text" name="exam_title" placeholder="e.g., Mid-Term Examination 2024" value="{{ wizard.get('exam_title', '') if wizard else '' }}">
+                    </div>
+                </div>
+
+                <button class="wizard-submit" type="submit">Continue to Configuration</button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="wizard-footer">
+        <div class="landing-footer__brand">
+            <span class="brand-mark brand-mark--small">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M7 3.5h7l4 4V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    <path d="M14 3.5V8h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            <span class="brand-text">Exam<span>Gen</span> Ai</span>
+        </div>
+        <p>&copy; 2026 ExamGen Ai. AI-powered question paper design &amp; evaluation.</p>
+    </footer>
+
+    {% include '_theme_script.html' %}
+</body>
+</html>

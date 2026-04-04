@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.Python
+.env
+.env.*
+.venv/
+venv/
+ENV/
+env/
+
+portal.db
+*.sqlite
+*.sqlite3
+
+generated/
+uploads/
+*.log

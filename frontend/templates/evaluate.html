@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluate Student Answers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="dashboard-body evaluation-body">
+    {% set active_page = 'evaluate' %}
+    {% include '_app_header.html' %}
+
+    <main class="evaluation-shell">
+        <section class="evaluation-panel">
+            <div class="evaluation-heading">
+                <h1>
+                    <span class="evaluation-heading__icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 11.5 10.5 14 16 8.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+                    </span>
+                    Evaluate Student Answers
+                </h1>
+                <p>Upload the answer key and student's answers for AI-powered evaluation with transparent marking</p>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-stack">
+                        {% for category, message in messages %}
+                            <div class="flash {{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <form method="post" enctype="multipart/form-data" class="evaluation-form">
+                <div class="evaluation-meta-grid">
+                    <div>
+                        <label for="student_name">Student Name</label>
+                        <input id="student_name" name="student_name" type="text" placeholder="e.g., Jatin Gumber">
+                    </div>
+                    <div>
+                        <label for="subject">Subject</label>
+                        <input id="subject" name="subject" type="text" placeholder="e.g., Computer Science">
+                    </div>
+                    <div>
+                        <label for="class_name">Class</label>
+                        <input id="class_name" name="class_name" type="text" placeholder="e.g., 12">
+                    </div>
+                    <div>
+                        <label for="section_name">Section</label>
+                        <input id="section_name" name="section_name" type="text" placeholder="e.g., A">
+                    </div>
+                </div>
+
+                <div class="evaluation-grid">
+                    <section class="answer-box">
+                        <div class="answer-box__header">
+                            <div class="answer-box__title">
+                                <span class="answer-box__icon navy">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7l4 4V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3.5V8h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </span>
+                                <h2>Answer Key</h2>
+                            </div>
+                            <label class="upload-chip" for="answer_key_file">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V6M8 10l4-4 4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 19.5h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                                Upload File
+                            </label>
+                            <input id="answer_key_file" name="answer_key_file" type="file" accept=".pdf,.txt,.md,.csv,.json,.py,.docx" hidden>
+                        </div>
+                        <small class="upload-file-name" data-file-label="answer_key_file">No file selected</small>
+                        <textarea name="answer_key" rows="12" placeholder="Paste your answer key here or upload a file above.&#10;&#10;Format:&#10;Q1. (2 marks) What is photosynthesis?&#10;Answer: Photosynthesis is the process by which plants convert sunlight into energy...&#10;&#10;Q2. (5 marks) Explain the water cycle.&#10;Answer: The water cycle consists of evaporation, condensation..."></textarea>
+                    </section>
+
+                    <section class="answer-box">
+                        <div class="answer-box__header">
+                            <div class="answer-box__title">
+                                <span class="answer-box__icon teal">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 8a7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </span>
+                                <h2>Student's Answers</h2>
+                            </div>
+                            <label class="upload-chip" for="student_answers_file">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V6M8 10l4-4 4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 19.5h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                                Upload File
+                            </label>
+                            <input id="student_answers_file" name="student_answers_file" type="file" accept=".pdf,.txt,.md,.csv,.json,.py,.docx" hidden>
+                        </div>
+                        <small class="upload-file-name" data-file-label="student_answers_file">No file selected</small>
+                        <textarea name="student_answers" rows="12" placeholder="Paste student's answers here or upload a file above.&#10;&#10;Format:&#10;Q1. Photosynthesis is when plants make food from sunlight...&#10;&#10;Q2. Water cycle has three stages - evaporation where water goes up..."></textarea>
+                    </section>
+                </div>
+
+                <button type="submit" class="evaluation-submit">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.9 4.3L18.5 9l-4.6 1.6L12 15l-1.9-4.4L5.5 9l4.6-1.7L12 3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Evaluate with AI
+                </button>
+            </form>
+        </section>
+    </main>
+
+    {% include '_theme_script.html' %}
+    <script>
+        (() => {
+            document.querySelectorAll('input[type="file"]').forEach((input) => {
+                input.addEventListener('change', () => {
+                    const target = document.querySelector(`[data-file-label="${input.id}"]`);
+                    if (!target) return;
+                    target.textContent = input.files && input.files[0] ? input.files[0].name : 'No file selected';
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

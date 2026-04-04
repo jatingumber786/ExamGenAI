@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configure Question Paper</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="dashboard-body wizard-body">
+    {% set active_page = 'create' %}
+    {% include '_app_header.html' %}
+
+    <main class="wizard-shell">
+        <div class="wizard-steps">
+            <div class="wizard-step wizard-step--done"><span>✓</span><strong>Upload</strong></div>
+            <div class="wizard-step-line wizard-step-line--active"></div>
+            <div class="wizard-step wizard-step--active"><span>2</span><strong>Configure</strong></div>
+            <div class="wizard-step-line"></div>
+            <div class="wizard-step"><span>3</span><strong>Generate</strong></div>
+        </div>
+
+        <section class="wizard-card">
+            <div class="wizard-card__heading">
+                <h2>Configure Question Paper</h2>
+                <p>Set difficulty, marks distribution, and question types</p>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-stack">
+                        {% for category, message in messages %}
+                            <div class="flash {{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <form method="post" class="wizard-form">
+                <label>Difficulty Level</label>
+                <select class="wizard-select" name="difficulty_level">
+                    <option>Medium - Application-based questions</option>
+                    <option>Easy - Basic understanding</option>
+                    <option>Hard - Analytical and advanced</option>
+                </select>
+
+                <div class="marks-header">
+                    <h3>Marks Distribution</h3>
+                    <span class="marks-pill">Total: 45 marks</span>
+                </div>
+
+                <div class="marks-row">
+                    <div>
+                        <strong>2 Marks Questions (Short answers)</strong>
+                        <small>5 questions = 10 marks</small>
+                    </div>
+                    <input type="range" min="1" max="8" value="5" name="count_2">
+                </div>
+                <div class="marks-row">
+                    <div>
+                        <strong>5 Marks Questions (Detailed answers)</strong>
+                        <small>3 questions = 15 marks</small>
+                    </div>
+                    <input type="range" min="1" max="6" value="3" name="count_5">
+                </div>
+                <div class="marks-row">
+                    <div>
+                        <strong>10 Marks Questions (Essay/Long answers)</strong>
+                        <small>2 questions = 20 marks</small>
+                    </div>
+                    <input type="range" min="1" max="4" value="2" name="count_10">
+                </div>
+
+                <h3 class="wizard-subheading">Question Types</h3>
+                <div class="wizard-type-grid">
+                    <label class="wizard-type-card"><input type="checkbox" name="question_types" value="mcq" checked><span>Multiple Choice Questions</span></label>
+                    <label class="wizard-type-card"><input type="checkbox" name="question_types" value="fill_blanks" checked><span>Fill in the Blanks</span></label>
+                    <label class="wizard-type-card"><input type="checkbox" name="question_types" value="short" checked><span>Short Answer Questions</span></label>
+                    <label class="wizard-type-card"><input type="checkbox" name="question_types" value="long" checked><span>Long Answer Questions</span></label>
+                </div>
+
+                <div class="wizard-actions">
+                    <a class="wizard-back" href="{{ url_for('dashboard') }}">Back</a>
+                    <button class="wizard-submit" type="submit">Generate Question Paper</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <footer class="wizard-footer">
+        <div class="landing-footer__brand">
+            <span class="brand-mark brand-mark--small">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M7 3.5h7l4 4V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    <path d="M14 3.5V8h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            <span class="brand-text">Exam<span>Gen</span> Ai</span>
+        </div>
+        <p>&copy; 2026 ExamGen Ai. AI-powered question paper design &amp; evaluation.</p>
+    </footer>
+
+    {% include '_theme_script.html' %}
+</body>
+</html>

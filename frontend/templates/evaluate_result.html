@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluation Result</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="dashboard-body evaluation-body">
+    {% set active_page = 'evaluate' %}
+    {% include '_app_header.html' %}
+
+    <main class="evaluation-shell evaluation-result-shell">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-stack">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        <section class="result-summary-card">
+            <div class="result-summary-main">
+                <div class="result-medal">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m9.2 12.8-1.4 7.2L12 17.8l4.2 2.2-1.4-7.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="result-score-copy">
+                    <span>Total Score</span>
+                    <strong>{{ result.marks_obtained }} / {{ result.total_marks }}</strong>
+                    <em>Grade: {{ result.grade }}</em>
+                </div>
+            </div>
+
+            <div class="result-performance">
+                <div class="result-performance__header">
+                    <span>Performance</span>
+                    <strong>{{ result.percentage }}%</strong>
+                </div>
+                <div class="result-performance__bar">
+                    <span style="width: {{ result.percentage }}%;"></span>
+                </div>
+                <small>{{ result.performance_band }}</small>
+            </div>
+
+            <div class="result-summary-actions">
+                <a class="result-outline-btn" href="{{ url_for('history') }}">View History</a>
+                <a class="result-fill-btn" href="{{ url_for('evaluate') }}">Evaluate Another</a>
+            </div>
+        </section>
+
+        <section class="evaluation-panel">
+            <div class="evaluation-heading evaluation-heading--compact">
+                <h1>
+                    <span class="evaluation-heading__icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7l4 4V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3.5V8h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                    Detailed Evaluation
+                </h1>
+                <p>Question-wise marks breakdown with AI feedback</p>
+            </div>
+
+            <div class="result-meta-grid">
+                <div class="result-meta-card">
+                    <span>Student</span>
+                    <strong>{{ result.student_name }}</strong>
+                </div>
+                <div class="result-meta-card">
+                    <span>Subject</span>
+                    <strong>{{ result.subject }}</strong>
+                </div>
+                <div class="result-meta-card">
+                    <span>Class / Section</span>
+                    <strong>{{ result.class_name }} / {{ result.section_name }}</strong>
+                </div>
+                <div class="result-meta-card">
+                    <span>Rubric</span>
+                    <strong>{{ result.rubric_name }}</strong>
+                </div>
+            </div>
+
+            <div class="insight-strip">
+                <div class="insight-pill">
+                    <span>Strengths</span>
+                    <p>{{ result.strengths }}</p>
+                </div>
+                <div class="insight-pill">
+                    <span>Improve</span>
+                    <p>{{ result.improvements }}</p>
+                </div>
+            </div>
+
+            <div class="detail-list">
+                {% for item in detail_rows %}
+                    <article class="detail-card">
+                        <div class="detail-card__top">
+                            <div class="detail-card__heading">
+                                <span class="detail-card__number">{{ item.number }}</span>
+                                <h3>{{ item.prompt }}</h3>
+                            </div>
+                            <div class="detail-score-pill">
+                                {{ item.marks }} / {{ item.out_of }}
+                            </div>
+                        </div>
+
+                        <div class="detail-answer-grid">
+                            <div class="detail-answer-box">
+                                <span>Expected Answer</span>
+                                <p>{{ item.expected_answer }}</p>
+                            </div>
+                            <div class="detail-answer-box student">
+                                <span>Student's Answer</span>
+                                <p>{{ item.student_answer }}</p>
+                            </div>
+                        </div>
+
+                        <div class="detail-feedback">{{ item.feedback }}</div>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    {% include '_theme_script.html' %}
+</body>
+</html>

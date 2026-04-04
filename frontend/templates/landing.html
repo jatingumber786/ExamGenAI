@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamGen Ai</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="landing-body">
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="brand" href="{{ url_for('landing') }}">
+                <span class="brand-mark">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M7 3.5h7l4 4V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                        <path d="M14 3.5V8h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M9 12h6M9 15.5h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                </span>
+                <span class="brand-text">Exam<span>Gen</span> Ai</span>
+            </a>
+
+            <nav class="landing-nav">
+                <a class="landing-nav__link active" href="#home">
+                    <span class="nav-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-4.5v-5.5h-5V21H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                    </span>
+                    Home
+                </a>
+                <a class="landing-nav__link" href="#how-it-works">
+                    <span class="nav-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7l4 4V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3.5V8h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                    Create Paper
+                </a>
+                <a class="landing-nav__link" href="#why-examgen">
+                    <span class="nav-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 11.5 10.5 14 16 8.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+                    </span>
+                    Evaluate
+                </a>
+                <a class="landing-nav__link" href="#footer">
+                    More
+                    <span class="nav-chevron">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                </a>
+                <button class="landing-nav__theme" type="button" aria-label="Toggle theme">
+                    <span class="theme-icon theme-icon--sun" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M18.4 5.6l-1.8 1.8M7.4 16.6l-1.8 1.8M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                    </span>
+                    <span class="theme-icon theme-icon--moon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M20 14.5A7.5 7.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                </button>
+                <a class="landing-signin" href="{{ url_for('dashboard') if signed_in else url_for('auth') }}">
+                    <span class="signin-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 7 15 12 10 17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.5 12H4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19.5 4.5h-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19.5 19.5h-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19.5 4.5v15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                    </span>
+                    {{ 'Dashboard' if signed_in else 'Sign In' }}
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="landing-hero">
+            <div class="landing-hero__glow landing-hero__glow--one"></div>
+            <div class="landing-hero__glow landing-hero__glow--two"></div>
+            <div class="landing-hero__content">
+                <div class="landing-pill">
+                    <span class="pill-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.7 5.3L19 10l-5.3 1.7L12 17l-1.7-5.3L5 10l5.3-1.7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                    </span>
+                    AI-Powered Exam Management
+                </div>
+                <h1>Create Question Papers &amp;<br>Evaluate <span>Answers</span> with AI</h1>
+                <p>
+                    Upload your notes, customize difficulty levels and question types, then let AI
+                    generate professional question papers. Evaluate student answers with
+                    transparent, consistent marking.
+                </p>
+                <div class="landing-actions">
+                    <a class="landing-btn landing-btn--primary" href="{{ url_for('auth') }}">
+                        <span class="landing-btn__icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7l4 4V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3.5V8h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </span>
+                        Create Question Paper
+                    </a>
+                    <a class="landing-btn landing-btn--secondary" href="{{ url_for('auth') }}">
+                        <span class="landing-btn__icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 11.5 10.5 14 16 8.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+                        </span>
+                        Evaluate Answers
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="landing-feature-strip">
+            <article class="feature-box">
+                <div class="feature-box__icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7l4 4V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3.5V8h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12h6M9 15.5h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </div>
+                <h3>Smart Question Generation</h3>
+                <p>Upload PDF notes and get customized questions based on difficulty, marks, and question types.</p>
+            </article>
+            <article class="feature-box">
+                <div class="feature-box__icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 11.5 10.5 14 16 8.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+                </div>
+                <h3>AI Answer Evaluation</h3>
+                <p>Upload answer keys and student responses for consistent, transparent marking with detailed feedback.</p>
+            </article>
+            <article class="feature-box">
+                <div class="feature-box__icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.7 5.3L19 10l-5.3 1.7L12 17l-1.7-5.3L5 10l5.3-1.7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                </div>
+                <h3>Student Transparency</h3>
+                <p>Students can view their evaluated answers with marks breakdown for each question.</p>
+            </article>
+        </section>
+
+        <section id="how-it-works" class="landing-section">
+            <div class="landing-section__heading">
+                <h2>How It Works</h2>
+                <p>Create professional question papers and evaluate answers in four simple steps</p>
+            </div>
+
+            <div class="steps-timeline">
+                <div class="steps-line"></div>
+                <article class="step-card">
+                    <div class="step-card__number">1</div>
+                    <div class="step-card__icon step-card__icon--violet">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V6M8 10l4-4 4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 19.5h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                    </div>
+                    <h3>Upload Notes</h3>
+                    <p>Upload your PDF notes or study material as the source content.</p>
+                </article>
+                <article class="step-card">
+                    <div class="step-card__number">2</div>
+                    <div class="step-card__icon step-card__icon--teal">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5A3.5 3.5 0 1 0 12 15.5 3.5 3.5 0 0 0 12 8.5Z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M19.4 15a1 1 0 0 0 .2 1.1l.1.1a1.2 1.2 0 0 1 0 1.7l-1.2 1.2a1.2 1.2 0 0 1-1.7 0l-.1-.1a1 1 0 0 0-1.1-.2 1 1 0 0 0-.6.9v.3a1.2 1.2 0 0 1-1.2 1.2h-1.7A1.2 1.2 0 0 1 10 21v-.2a1 1 0 0 0-.7-.9 1 1 0 0 0-1.1.2l-.1.1a1.2 1.2 0 0 1-1.7 0l-1.2-1.2a1.2 1.2 0 0 1 0-1.7l.1-.1a1 1 0 0 0 .2-1.1 1 1 0 0 0-.9-.6H4.4A1.2 1.2 0 0 1 3.2 14v-1.7A1.2 1.2 0 0 1 4.4 11h.2a1 1 0 0 0 .9-.7 1 1 0 0 0-.2-1.1l-.1-.1a1.2 1.2 0 0 1 0-1.7l1.2-1.2a1.2 1.2 0 0 1 1.7 0l.1.1a1 1 0 0 0 1.1.2 1 1 0 0 0 .6-.9V4.4A1.2 1.2 0 0 1 11.1 3h1.7A1.2 1.2 0 0 1 14 4.4v.2a1 1 0 0 0 .7.9 1 1 0 0 0 1.1-.2l.1-.1a1.2 1.2 0 0 1 1.7 0l1.2 1.2a1.2 1.2 0 0 1 0 1.7l-.1.1a1 1 0 0 0-.2 1.1 1 1 0 0 0 .9.6h.2a1.2 1.2 0 0 1 1.2 1.2V14a1.2 1.2 0 0 1-1.2 1.2h-.3a1 1 0 0 0-.9.7Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+                    </div>
+                    <h3>Configure Settings</h3>
+                    <p>Set difficulty, marks distribution, and question types you need.</p>
+                </article>
+                <article class="step-card">
+                    <div class="step-card__number">3</div>
+                    <div class="step-card__icon step-card__icon--blue">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7l4 4V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3.5V8h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <h3>Generate Paper</h3>
+                    <p>AI creates a balanced question paper matching your specifications.</p>
+                </article>
+                <article class="step-card">
+                    <div class="step-card__number">4</div>
+                    <div class="step-card__icon step-card__icon--orange">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 11.5 10.5 14 16 8.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+                    </div>
+                    <h3>Evaluate &amp; Share</h3>
+                    <p>Upload answers for AI evaluation with transparent marking.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="why-examgen" class="landing-section landing-section--compact">
+            <div class="landing-section__heading">
+                <h2>Why ExamGen Ai?</h2>
+                <p>Built for educators who value efficiency, fairness, and insight in their assessment workflow.</p>
+            </div>
+
+            <div class="why-grid">
+                <article class="why-card">
+                    <div class="why-card__icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 8.5A3.5 3.5 0 0 1 12.5 5a3 3 0 0 1 3 3v.3a2.9 2.9 0 0 1 2.2 2.8 3 3 0 0 1-.8 2.1A3.2 3.2 0 0 1 17 14a3 3 0 0 1-2.8 3H10a3 3 0 0 1-3-3 2.8 2.8 0 0 1 .2-1.1A3 3 0 0 1 7 7.9a2.8 2.8 0 0 1 2-1.4Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 10.5c.7.2 1.2.8 1.2 1.5S10.7 13.3 10 13.5M14 10.5c-.7.2-1.2.8-1.2 1.5s.5 1.3 1.2 1.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    </div>
+                    <div>
+                        <h3>AI-Powered Intelligence</h3>
+                        <p>Our advanced AI analyzes your uploaded notes and study materials to generate well-structured, balanced question papers across MCQs, short answers, long answers, and fill-in-the-blanks.</p>
+                    </div>
+                </article>
+                <article class="why-card">
+                    <div class="why-card__icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5 18 6v5.4c0 4.1-2.5 7.7-6 9.1-3.5-1.4-6-5-6-9.1V6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div>
+                        <h3>Fair &amp; Transparent Evaluation</h3>
+                        <p>Every answer is evaluated against a teacher-provided answer key with detailed marks breakdown, helping educators maintain trust and accountability in assessment.</p>
+                    </div>
+                </article>
+                <article class="why-card">
+                    <div class="why-card__icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19V9M12 19V5M19 19v-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M4 19.5h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                    </div>
+                    <div>
+                        <h3>Performance Analytics</h3>
+                        <p>Track student performance over time with rich analytics and visualizations to identify strengths, weaknesses, and trends across evaluations.</p>
+                    </div>
+                </article>
+                <article class="why-card">
+                    <div class="why-card__icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 12h17M12 3.5a13 13 0 0 1 0 17M12 3.5a13 13 0 0 0 0 17" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                    </div>
+                    <div>
+                        <h3>Accessible Anywhere</h3>
+                        <p>ExamGen Ai is fully web-based, so teachers can create papers and evaluate answers from any device, while students can review results anytime.</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer" class="landing-footer">
+        <div class="landing-footer__brand">
+            <span class="brand-mark brand-mark--small">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M7 3.5h7l4 4V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    <path d="M14 3.5V8h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9 12h6M9 15.5h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+            </span>
+            <span class="brand-text">Exam<span>Gen</span> Ai</span>
+        </div>
+        <p>&copy; 2026 ExamGen Ai. AI-powered question paper design &amp; evaluation.</p>
+    </footer>
+    {% include '_theme_script.html' %}
+</body>
+</html>
