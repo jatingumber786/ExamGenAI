@@ -143,45 +143,47 @@
             </div>
             {% if records %}
                 <form id="history-delete-form" method="post" action="{{ url_for('delete_history_records') }}">
-                <table class="history-table">
-                    <thead>
-                        <tr>
-                            <th><input type="checkbox" id="select-all-history" aria-label="Select all history rows"></th>
-                            <th>Student</th>
-                            <th>Subject</th>
-                            <th>Class</th>
-                            <th>Section</th>
-                            <th>Marks</th>
-                            <th>Percent</th>
-                            <th>Band</th>
-                            <th>Rubric</th>
-                            <th>Date</th>
-                            <th>Report</th>
-                            <th>Summary</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for row in records %}
-                            <tr>
-                                <td><input type="checkbox" name="evaluation_ids" value="{{ row.id }}" class="history-select-row" aria-label="Select {{ row.student_name }}"></td>
-                                <td>{{ row.student_name }}</td>
-                                <td>{{ row.subject }}</td>
-                                <td>{{ row.class_name }}</td>
-                                <td>{{ row.section_name }}</td>
-                                <td>{{ row.marks_obtained }} / {{ row.total_marks }}</td>
-                                <td>{{ row.percentage }}%</td>
-                                <td>{{ row.performance_band }}</td>
-                                <td>{{ row.rubric_name }}</td>
-                                <td>{{ row.created_at }}</td>
-                                <td><a class="table-link" href="{{ url_for('evaluation_report', evaluation_id=row.id) }}">PDF</a></td>
-                                <td>
-                                    <strong>Strength:</strong> {{ row.strengths }}<br>
-                                    <strong>Improve:</strong> {{ row.improvements }}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                    <div class="table-scroll">
+                        <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="select-all-history" aria-label="Select all history rows"></th>
+                                    <th>Student</th>
+                                    <th>Subject</th>
+                                    <th>Class</th>
+                                    <th>Section</th>
+                                    <th>Marks</th>
+                                    <th>Percent</th>
+                                    <th>Band</th>
+                                    <th>Rubric</th>
+                                    <th>Date</th>
+                                    <th>Report</th>
+                                    <th>Summary</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in records %}
+                                    <tr>
+                                        <td><input type="checkbox" name="evaluation_ids" value="{{ row.id }}" class="history-select-row" aria-label="Select {{ row.student_name }}"></td>
+                                        <td>{{ row.student_name }}</td>
+                                        <td>{{ row.subject }}</td>
+                                        <td>{{ row.class_name }}</td>
+                                        <td>{{ row.section_name }}</td>
+                                        <td>{{ row.marks_obtained }} / {{ row.total_marks }}</td>
+                                        <td>{{ row.percentage }}%</td>
+                                        <td>{{ row.performance_band }}</td>
+                                        <td>{{ row.rubric_name }}</td>
+                                        <td>{{ row.created_at }}</td>
+                                        <td><a class="table-link" href="{{ url_for('evaluation_report', evaluation_id=row.id) }}">PDF</a></td>
+                                        <td>
+                                            <strong>Strength:</strong> {{ row.strengths }}<br>
+                                            <strong>Improve:</strong> {{ row.improvements }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </form>
             {% else %}
                 <pre>No student evaluations have been saved yet.</pre>

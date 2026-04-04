@@ -91,24 +91,26 @@
                     <h2>Recent Accounts</h2>
                 </div>
                 {% if insights.recent_teachers %}
-                    <table class="history-table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Created At</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for row in insights.recent_teachers %}
+                    <div class="table-scroll">
+                        <table class="history-table">
+                            <thead>
                                 <tr>
-                                    <td>{{ row.full_name }}</td>
-                                    <td>{{ row.email }}</td>
-                                    <td>{{ row.created_at }}</td>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Created At</th>
                                 </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {% for row in insights.recent_teachers %}
+                                    <tr>
+                                        <td>{{ row.full_name }}</td>
+                                        <td>{{ row.email }}</td>
+                                        <td>{{ row.created_at }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 {% else %}
                     <p class="empty-copy">No accounts created yet.</p>
                 {% endif %}
@@ -119,34 +121,36 @@
                     <h2>Teacher Accounts</h2>
                 </div>
                 {% if insights.teacher_records %}
-                    <table class="history-table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Joined</th>
-                                <th>Papers</th>
-                                <th>Evaluations</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for row in insights.teacher_records %}
+                    <div class="table-scroll">
+                        <table class="history-table">
+                            <thead>
                                 <tr>
-                                    <td>{{ row.full_name }}</td>
-                                    <td>{{ row.email }}</td>
-                                    <td>{{ row.created_at }}</td>
-                                    <td>{{ row.papers }}</td>
-                                    <td>{{ row.evaluations }}</td>
-                                    <td>
-                                        <form method="post" action="{{ url_for('owner_delete_teacher', teacher_id=row.id) }}" onsubmit="return confirm('Delete this teacher account and all related papers/evaluations?');">
-                                            <button type="submit" class="history-delete-btn owner-delete-btn">Delete User</button>
-                                        </form>
-                                    </td>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Joined</th>
+                                    <th>Papers</th>
+                                    <th>Evaluations</th>
+                                    <th>Action</th>
                                 </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {% for row in insights.teacher_records %}
+                                    <tr>
+                                        <td>{{ row.full_name }}</td>
+                                        <td>{{ row.email }}</td>
+                                        <td>{{ row.created_at }}</td>
+                                        <td>{{ row.papers }}</td>
+                                        <td>{{ row.evaluations }}</td>
+                                        <td>
+                                            <form method="post" action="{{ url_for('owner_delete_teacher', teacher_id=row.id) }}" onsubmit="return confirm('Delete this teacher account and all related papers/evaluations?');">
+                                                <button type="submit" class="history-delete-btn owner-delete-btn">Delete User</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 {% else %}
                     <p class="empty-copy">No teacher accounts available.</p>
                 {% endif %}

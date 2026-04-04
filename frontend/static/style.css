@@ -1100,6 +1100,12 @@ button:hover,
     padding: 0 14px;
 }
 
+.table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
 .wizard-body {
     background:
         radial-gradient(circle at top left, rgba(47, 201, 198, 0.06), transparent 24%),
@@ -2569,5 +2575,243 @@ body.theme-dark .detail-card__number {
     .app-nav {
         width: 100%;
         justify-content: flex-start;
+    }
+}
+
+@media (max-width: 768px) {
+    .auth-body,
+    .dashboard-body {
+        padding: 16px;
+    }
+
+    .site-header__inner,
+    .app-header__inner {
+        width: calc(100% - 24px);
+        padding: 14px 0;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .landing-nav,
+    .app-nav {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .landing-nav__link,
+    .app-nav__link,
+    .landing-signin,
+    .app-signout,
+    .landing-nav__theme,
+    .theme-toggle {
+        width: 100%;
+        justify-content: center;
+        min-width: 0;
+        margin-left: 0;
+    }
+
+    .landing-nav__theme,
+    .theme-toggle {
+        height: 48px;
+        min-height: 48px;
+    }
+
+    .landing-hero {
+        padding: 46px 16px 42px;
+    }
+
+    .landing-hero__content {
+        max-width: 100%;
+    }
+
+    .landing-hero h1 {
+        font-size: clamp(2.6rem, 11vw, 3.4rem);
+        line-height: 1.02;
+    }
+
+    .landing-hero p {
+        font-size: 1rem;
+        margin-top: 20px;
+    }
+
+    .landing-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .landing-btn {
+        width: 100%;
+        justify-content: center;
+        min-width: 0;
+    }
+
+    .landing-feature-strip,
+    .steps-timeline,
+    .why-grid,
+    .dual-grid,
+    .chip-grid,
+    .dashboard-grid,
+    .evaluation-meta-grid,
+    .evaluation-grid,
+    .result-meta-grid,
+    .detail-answer-grid,
+    .insight-strip {
+        grid-template-columns: 1fr;
+    }
+
+    .feature-box,
+    .why-card,
+    .step-card,
+    .wizard-card,
+    .evaluation-panel,
+    .result-summary-card,
+    .panel,
+    .chart-card {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .why-card {
+        grid-template-columns: 1fr;
+    }
+
+    .step-card {
+        text-align: left;
+    }
+
+    .steps-line {
+        display: none;
+    }
+
+    .wizard-shell,
+    .evaluation-shell,
+    .history-layout {
+        max-width: 100%;
+    }
+
+    .wizard-steps,
+    .generated-header,
+    .generated-actions,
+    .wizard-actions,
+    .marks-header,
+    .result-summary-main,
+    .result-summary-actions,
+    .detail-card__top,
+    .answer-box__header,
+    .history-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .wizard-step {
+        width: 100%;
+    }
+
+    .wizard-step-line {
+        width: 32px;
+    }
+
+    .dropzone {
+        min-height: 180px;
+    }
+
+    .result-score-copy strong {
+        font-size: 2.2rem;
+    }
+
+    .result-medal {
+        width: 92px;
+        height: 92px;
+    }
+
+    .result-summary-card {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .stats-row {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .table-scroll {
+        margin-top: 10px;
+    }
+
+    .history-table {
+        min-width: 760px;
+    }
+
+    .mini-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .landing-footer,
+    .wizard-footer {
+        padding: 22px 18px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 560px) {
+    .landing-nav,
+    .app-nav,
+    .stats-row {
+        grid-template-columns: 1fr;
+    }
+
+    .site-header__inner,
+    .app-header__inner {
+        width: calc(100% - 20px);
+    }
+
+    .brand {
+        width: 100%;
+    }
+
+    .landing-pill {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .landing-hero h1 {
+        font-size: 2.25rem;
+    }
+
+    .landing-section {
+        padding: 42px 16px 30px;
+    }
+
+    .landing-feature-strip {
+        padding: 0 16px 36px;
+    }
+
+    .auth-container {
+        margin: 28px auto;
+        padding: 28px 18px;
+    }
+
+    .wizard-card,
+    .evaluation-panel,
+    .panel,
+    .result-summary-card {
+        border-radius: 20px;
+        padding: 18px 16px;
+    }
+
+    .question-card,
+    .detail-card,
+    .result-meta-card,
+    .insight-pill {
+        padding: 16px;
+    }
+
+    .history-table {
+        min-width: 680px;
     }
 }
