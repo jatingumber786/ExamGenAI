@@ -277,8 +277,10 @@ def owner_required(view):
     return wrapped_view
 
 
-OWNER_USERNAME = "jatingumber"
-OWNER_PASSWORD = "23bcs10547"
+OWNER_CREDENTIALS = {
+    "jatingumber": "23bcs10547",
+    "kumarishristi": "23bcs10551",
+}
 
 
 def allowed_file(filename: str) -> bool:
@@ -1076,11 +1078,11 @@ def auth():
             flash("Enter your email or username and password to sign in.", "danger")
             return render_template("auth.html", active_mode="login")
 
-        if login_id == OWNER_USERNAME and password == OWNER_PASSWORD:
+        if login_id in OWNER_CREDENTIALS and password == OWNER_CREDENTIALS[login_id]:
             session.clear()
             session["teacher_id"] = 0
-            session["teacher_name"] = "Jatin Gumber"
-            session["teacher_email"] = OWNER_USERNAME
+            session["teacher_name"] = "Jatin Gumber" if login_id == "jatingumber" else "Kumari Shristi"
+            session["teacher_email"] = login_id
             session["is_owner"] = True
             flash("Owner signed in successfully.", "success")
             return redirect(url_for("owner"))

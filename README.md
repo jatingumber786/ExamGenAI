@@ -36,6 +36,8 @@ The owner dashboard is locked to the dedicated owner login:
 
 - username: `jatingumber`
 - password: `23bcs10547`
+- username: `kumarishristi`
+- password: `23bcs10551`
 
 That page shows:
 
